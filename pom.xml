@@ -73,14 +73,12 @@
         <configuration> 
           <schemaVersion>v2</schemaVersion>  
           <subscriptionId>7d85efaa-4959-43ff-a484-f7cb9ae141a4</subscriptionId>  
-          <resourceGroup>webapp</resourceGroup>  
-          <appName>item-donation</appName>  
+          <resourceGroup>itemdonation-1666725245445-rg</resourceGroup>  
+          <appName>itemdonation-1666725245445</appName>  
           <pricingTier>P1v2</pricingTier>  
-          <region>eastus</region>  
-          <appServicePlanName>ASP-Donation-a0c2</appServicePlanName>  
-          <appServicePlanResourceGroup>Donation</appServicePlanResourceGroup>  
+          <region>centralus</region>  
           <runtime> 
-            <os>Windows</os>  
+            <os>Linux</os>  
             <javaVersion>Java 17</javaVersion>  
             <webContainer>Java SE</webContainer> 
           </runtime>  
