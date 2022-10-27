@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.projectspring.itemdonation.models.IntencaoModel;
-import com.projectspring.itemdonation.dtos.IntencaoDto;
-import com.projectspring.itemdonation.services.IntencaoService;
+import com.projectspring.itemdonation.models.DoacaoModel;
+import com.projectspring.itemdonation.dtos.DoacaoDto;
+import com.projectspring.itemdonation.services.DoacaoService;
 
 
 @RestController
@@ -27,28 +27,28 @@ import com.projectspring.itemdonation.services.IntencaoService;
 @RequestMapping("/doacao")
 public class IntencaoController {
 
-    final IntencaoService intencaoService;
+    final DoacaoService doacaoService;
 
-    public IntencaoController(IntencaoService intencaoService) {
-        this.intencaoService = intencaoService;
+    public IntencaoController(DoacaoService doacaoService) {
+        this.doacaoService = doacaoService;
     }
 
     @PostMapping
-    public ResponseEntity<Object> SalvarDoacao(@RequestBody @Valid IntencaoDto intencaoDto) {
-        var intencaoModel = new IntencaoModel();
-        BeanUtils.copyProperties(intencaoDto, intencaoModel);
-        intencaoModel.setDtCriacao(LocalDateTime.now(ZoneId.of("UTC")));
-        return ResponseEntity.status(HttpStatus.CREATED).body(intencaoService.save(intencaoModel));
+    public ResponseEntity<Object> SalvarDoacao(@RequestBody @Valid DoacaoDto doacaoDto) {
+        var doacaoModel = new DoacaoModel();
+        BeanUtils.copyProperties(doacaoDto, doacaoModel);
+        doacaoModel.setDtCriacao(LocalDateTime.now(ZoneId.of("UTC")));
+        return ResponseEntity.status(HttpStatus.CREATED).body(doacaoService.save(doacaoModel));
     }
 
     @GetMapping
-    public ResponseEntity<List<IntencaoModel>> ObterDoacoes(){
-        return ResponseEntity.status(HttpStatus.OK).body(intencaoService.obterIntencoesAll());
+    public ResponseEntity<List<DoacaoModel>> ObterDoacoes(){
+        return ResponseEntity.status(HttpStatus.OK).body(doacaoService.obterIntencoesAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> ObterDoacao(@PathVariable(value = "id") UUID id){
-        Optional <IntencaoModel> intencaoModelOptional = intencaoService.findById(id);
+        Optional <DoacaoModel> intencaoModelOptional = doacaoService.findById(id);
         if(!intencaoModelOptional.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Doação não encontrada.");
         }
@@ -57,28 +57,25 @@ public class IntencaoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> AtualizarDoacao(@PathVariable(value = "id") UUID id,
-            @RequestBody @Valid IntencaoDto intencaoDto) {
-        Optional<IntencaoModel> intencaoModelOptional = intencaoService.findById(id);
-        if (!intencaoModelOptional.isPresent()) {
+            @RequestBody @Valid DoacaoDto doacaoDto) {
+        Optional<DoacaoModel> doacaoModelOptional = doacaoService.findById(id);
+        if (!doacaoModelOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Doação não encontrado.");
         }
-        var intencaoModel = intencaoModelOptional.get();
-        intencaoModel.setTitulo(intencaoDto.getTitulo());
-        intencaoModel.setDescricao(intencaoDto.getDescricao());
-        intencaoModel.setIsRetirar(intencaoDto.getIsRetirar());
-        intencaoModel.setEnderecoId(intencaoDto.getEnderecoId());
-        intencaoModel.setCategoriaId(intencaoDto.getCategoriaId());
-        intencaoModel.setItemId(intencaoDto.getItemId());
-        return ResponseEntity.status(HttpStatus.OK).body(intencaoService.save(intencaoModel));
+        var intencaoModel = doacaoModelOptional.get();
+        intencaoModel.setTitulo(doacaoDto.getTitulo());
+        intencaoModel.setDescricao(doacaoDto.getDescricao());
+        intencaoModel.setIsRetirar(doacaoDto.getIsRetirar());
+        return ResponseEntity.status(HttpStatus.OK).body(doacaoService.save(intencaoModel));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deletarDoacaoEntity(@PathVariable(value = "id") UUID id){
-        Optional<IntencaoModel> intencaoModelOptional = intencaoService.findById(id);
+        Optional<DoacaoModel> intencaoModelOptional = doacaoService.findById(id);
         if (!intencaoModelOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Doação não encontrada.");
         }
-        intencaoService.delete(intencaoModelOptional.get());
+        doacaoService.delete(intencaoModelOptional.get());
         return ResponseEntity.status(HttpStatus.OK).body("Doação excluída com sucesso.");
     }
 }

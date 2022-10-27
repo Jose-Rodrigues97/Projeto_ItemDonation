@@ -12,8 +12,8 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "TB_INTENCAO")
-public class IntencaoModel implements Serializable{
+@Table(name = "TB_DOACAO")
+public class DoacaoModel implements Serializable{
     private static final long serialVersionUID = 1L;
     
     @Id
@@ -26,15 +26,7 @@ public class IntencaoModel implements Serializable{
     @Column(nullable = false)
     private String isRetirar;
     @Column(nullable = false)
-    private Integer conservacaoId;
-    @Column(nullable = false)
-    private Integer enderecoId;
-    @Column(nullable = false)
-    private Integer categoriaId;
-    @Column(nullable = false)
-    private Integer itemId;
-    @Column(nullable = false)
-    private UUID pessoaId;
+    private String conservacaoId;
     @Column(nullable = false)
     private LocalDateTime dtCriacao;
 }

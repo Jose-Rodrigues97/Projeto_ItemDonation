@@ -5,13 +5,13 @@ import lombok.Data;
 
 @Data
 public class PessoaDto {
-    @NotBlank
+    @NotBlank(message = "Nome é obrigatório.")
     private String nome;
-    @NotBlank
+    @NotBlank(message = "Email é obrigatório.")
     private String email;
-    @NotBlank
+    @NotBlank(message = "Senha é obrigatório.")
     private String senha;
-    @NotBlank
+    @NotBlank(message = "Telefone é obrigatório.")
     @Size(max = 20)
     private String telefone;
 }
