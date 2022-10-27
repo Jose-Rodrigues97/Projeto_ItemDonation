@@ -9,10 +9,11 @@ public class DoacaoDto {
     private String titulo;
     @NotBlank
     private String descricao;
-    @NotBlank
-    private String isRetirar;
-    
+    private boolean isRetirar;
     private Integer conservacaoId;
-    
-    
+    private Integer enderecoId;
+    private Integer categoriaId;
+    private Integer itemId;
+    @NotBlank
+    private String pessoaId;
 }

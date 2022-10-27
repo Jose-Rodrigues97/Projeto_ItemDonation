@@ -24,9 +24,16 @@ public class DoacaoModel implements Serializable{
     @Column(nullable = false)
     private String descricao;
     @Column(nullable = false)
-    private String isRetirar;
+    private boolean isRetirar;
     @Column(nullable = false)
-    private String conservacaoId;
+    private Integer conservacaoId;
     @Column(nullable = false)
+    private Integer enderecoId;
+    @Column(nullable = false)
+    private Integer categoriaId;
+    @Column(nullable = false)
+    private Integer itemId;
+    @Column(nullable = false)
+    private UUID pessoaId;
     private LocalDateTime dtCriacao;
 }

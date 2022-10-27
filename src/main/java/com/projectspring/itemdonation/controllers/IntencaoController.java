@@ -62,11 +62,15 @@ public class IntencaoController {
         if (!doacaoModelOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Doação não encontrado.");
         }
-        var intencaoModel = doacaoModelOptional.get();
-        intencaoModel.setTitulo(doacaoDto.getTitulo());
-        intencaoModel.setDescricao(doacaoDto.getDescricao());
-        intencaoModel.setIsRetirar(doacaoDto.getIsRetirar());
-        return ResponseEntity.status(HttpStatus.OK).body(doacaoService.save(intencaoModel));
+        var doacaoModel = doacaoModelOptional.get();
+        doacaoModel.setTitulo(doacaoDto.getTitulo());
+        doacaoModel.setDescricao(doacaoDto.getDescricao());
+        doacaoModel.setRetirar(doacaoDto.isRetirar());
+        doacaoModel.setEnderecoId(doacaoDto.getEnderecoId());
+        doacaoModel.setCategoriaId(doacaoDto.getCategoriaId());
+        doacaoModel.setItemId(doacaoDto.getItemId());
+        
+        return ResponseEntity.status(HttpStatus.OK).body(doacaoService.save(doacaoModel));
     }
 
     @DeleteMapping("/{id}")
