@@ -18,13 +18,13 @@ public class DoacaoModel implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private UUID id;
     @Column(nullable = false)
     private String titulo;
     @Column(nullable = false)
     private String descricao;
     @Column(nullable = false)
-    private boolean isRetirar;
+    private boolean retirar;
     @Column(nullable = false)
     private Integer conservacaoId;
     @Column(nullable = false)

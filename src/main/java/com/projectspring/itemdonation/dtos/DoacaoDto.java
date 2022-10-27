@@ -1,5 +1,7 @@
 package com.projectspring.itemdonation.dtos;
 
+import java.util.UUID;
+
 import javax.validation.constraints.NotBlank;
 import lombok.Data;
 
@@ -9,11 +11,10 @@ public class DoacaoDto {
     private String titulo;
     @NotBlank
     private String descricao;
-    private boolean isRetirar;
+    private boolean retirar;
     private Integer conservacaoId;
     private Integer enderecoId;
     private Integer categoriaId;
     private Integer itemId;
-    @NotBlank
-    private String pessoaId;
+    private UUID pessoaId;
 }

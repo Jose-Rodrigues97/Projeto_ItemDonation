@@ -25,11 +25,11 @@ import com.projectspring.itemdonation.services.DoacaoService;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/doacao")
-public class IntencaoController {
+public class DoacaoController {
 
     final DoacaoService doacaoService;
 
-    public IntencaoController(DoacaoService doacaoService) {
+    public DoacaoController(DoacaoService doacaoService) {
         this.doacaoService = doacaoService;
     }
 
