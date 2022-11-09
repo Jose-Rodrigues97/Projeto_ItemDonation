@@ -2,7 +2,6 @@ package com.projectspring.itemdonation.controllers;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -41,8 +40,8 @@ public class RequisicaoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(requisicaoService.save(requisicaoModel));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Object> ObterPessoa(@PathVariable(value = "id") UUID id) {
+    @GetMapping("/{pessoaId}")
+    public ResponseEntity<Object> ObterPessoa(@PathVariable(value = "pessoaId") UUID id) {
         Optional<RequisicaoModel> requisicaoModelOptional = requisicaoService.findById(id);
         if (!requisicaoModelOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Requisição não encontrada.");

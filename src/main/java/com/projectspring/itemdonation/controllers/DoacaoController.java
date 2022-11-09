@@ -55,11 +55,11 @@ public class DoacaoController {
         return ResponseEntity.status(HttpStatus.OK).body(doacaoModelOptional.get());
     }
 
-    //@GetMapping("/{pessoaId}")
-    //public ResponseEntity<List<DoacaoModel>> ObterDoacaoPorUsuario(@PathVariable(value = "pessoaId") UUID pessoaId){
-    //    List<DoacaoModel> doacaoModelList = doacaoService.obterDoacoesUsuarioAll(pessoaId);
-    //    return ResponseEntity.status(HttpStatus.OK).body(doacaoModelList);
-    //}
+    @GetMapping("/pessoa/{pessoaId}")
+    public ResponseEntity<List<DoacaoModel>> ObterDoacaoPorUsuario(@PathVariable(value = "pessoaId") UUID pessoaId){
+        List<DoacaoModel> doacaoModelList = doacaoService.obterDoacoesUsuarioAll(pessoaId);
+        return ResponseEntity.status(HttpStatus.OK).body(doacaoModelList);
+    }
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> AtualizarDoacao(@PathVariable(value = "id") UUID id,
