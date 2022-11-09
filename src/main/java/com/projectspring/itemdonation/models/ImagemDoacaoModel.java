@@ -1,7 +1,10 @@
 package com.projectspring.itemdonation.models;
 import java.io.Serializable;
+import java.util.UUID;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -10,13 +13,13 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "TB_IMAGEM_INTENCAO")
-public class ImagemIntencaoModel implements Serializable{
+@Table(name = "TB_IMAGEM_DOACAO")
+public class ImagemDoacaoModel implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Integer imagemId;
     @Column(nullable = false)
     private byte binario;
     @Column(nullable = false)
-    private String intencaoId;
+    private UUID doacaoId;
 }

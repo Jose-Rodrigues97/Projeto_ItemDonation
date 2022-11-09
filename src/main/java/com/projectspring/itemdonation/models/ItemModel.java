@@ -16,7 +16,7 @@ public class ItemModel implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Integer itemId;
     @Column(nullable = false)
     private String nome;
     @Column(nullable = false)

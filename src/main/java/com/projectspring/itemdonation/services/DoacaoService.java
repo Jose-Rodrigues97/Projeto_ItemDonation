@@ -22,12 +22,16 @@ public class DoacaoService {
         return doacaoRepository.save(doacaoModel);
     }
 
-    public List<DoacaoModel> obterIntencoesAll() {
+    public List<DoacaoModel> obterDoacoesAll() {
         return doacaoRepository.findAll();
     }
 
     public Optional<DoacaoModel> findById(UUID id) {
         return doacaoRepository.findById(id);
+    }
+
+    public List<DoacaoModel> obterDoacoesUsuarioAll(UUID pessoaId){
+        return doacaoRepository.findByPessoaId(pessoaId);
     }
 
     @Transactional

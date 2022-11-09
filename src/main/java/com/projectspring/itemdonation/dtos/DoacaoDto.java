@@ -17,4 +17,13 @@ public class DoacaoDto {
     private Integer categoriaId;
     private Integer itemId;
     private UUID pessoaId;
+    private Integer status;
+    @NotBlank
+    private String endereco;
+    @NotBlank
+    private String bairro;
+    @NotBlank
+    private String cidade;
+    @NotBlank
+    private String estado;
 }

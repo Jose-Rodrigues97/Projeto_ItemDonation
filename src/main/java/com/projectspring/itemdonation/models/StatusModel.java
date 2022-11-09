@@ -10,23 +10,13 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "TB_ENDERECO")
-public class EnderecoModel implements Serializable{
+@Table(name = "TB_STATUS")
+public class StatusModel implements Serializable{
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Integer statusId;
     @Column(nullable = false)
-    private String logradouro;
-    @Column(nullable = false)
-    private int numero;
-    @Column(nullable = false)
-    private String estado;
-    @Column(nullable = false)
-    private String pais;
-    @Column(nullable = false)
-    private String cidade;
-    @Column(nullable = false)
-    private String bairro;
+    private String descrição;    
 }

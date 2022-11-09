@@ -3,9 +3,9 @@ import java.util.List;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import com.projectspring.itemdonation.models.DoacaoModel;
+import com.projectspring.itemdonation.models.RequisicaoModel;
 
 @Repository
-public interface DoacaoRepository extends JpaRepository<DoacaoModel, UUID>{
-    List<DoacaoModel> findByPessoaId(UUID pessoaId);
+public interface RequisicaoRepository extends JpaRepository<RequisicaoModel, UUID>{
+    
 }

@@ -43,43 +43,51 @@ public class DoacaoController {
 
     @GetMapping
     public ResponseEntity<List<DoacaoModel>> ObterDoacoes(){
-        return ResponseEntity.status(HttpStatus.OK).body(doacaoService.obterIntencoesAll());
+        return ResponseEntity.status(HttpStatus.OK).body(doacaoService.obterDoacoesAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> ObterDoacao(@PathVariable(value = "id") UUID id){
-        Optional <DoacaoModel> intencaoModelOptional = doacaoService.findById(id);
-        if(!intencaoModelOptional.isPresent()){
+        Optional <DoacaoModel> doacaoModelOptional = doacaoService.findById(id);
+        if(!doacaoModelOptional.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Doação não encontrada.");
         }
-        return ResponseEntity.status(HttpStatus.OK).body(intencaoModelOptional.get());
+        return ResponseEntity.status(HttpStatus.OK).body(doacaoModelOptional.get());
     }
+
+    //@GetMapping("/{pessoaId}")
+    //public ResponseEntity<List<DoacaoModel>> ObterDoacaoPorUsuario(@PathVariable(value = "pessoaId") UUID pessoaId){
+    //    List<DoacaoModel> doacaoModelList = doacaoService.obterDoacoesUsuarioAll(pessoaId);
+    //    return ResponseEntity.status(HttpStatus.OK).body(doacaoModelList);
+    //}
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> AtualizarDoacao(@PathVariable(value = "id") UUID id,
             @RequestBody @Valid DoacaoDto doacaoDto) {
         Optional<DoacaoModel> doacaoModelOptional = doacaoService.findById(id);
         if (!doacaoModelOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Doação não encontrado.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Doação não encontrada.");
         }
         var doacaoModel = doacaoModelOptional.get();
         doacaoModel.setTitulo(doacaoDto.getTitulo());
         doacaoModel.setDescricao(doacaoDto.getDescricao());
         doacaoModel.setRetirar(doacaoDto.isRetirar());
-        doacaoModel.setEnderecoId(doacaoDto.getEnderecoId());
+        doacaoModel.setEndereco(doacaoDto.getEndereco());
         doacaoModel.setCategoriaId(doacaoDto.getCategoriaId());
         doacaoModel.setItemId(doacaoDto.getItemId());
-        
+        doacaoModel.setBairro(doacaoDto.getBairro());
+        doacaoModel.setCidade(doacaoDto.getCidade());
+        doacaoModel.setEstado(doacaoDto.getEstado());
         return ResponseEntity.status(HttpStatus.OK).body(doacaoService.save(doacaoModel));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deletarDoacaoEntity(@PathVariable(value = "id") UUID id){
-        Optional<DoacaoModel> intencaoModelOptional = doacaoService.findById(id);
-        if (!intencaoModelOptional.isPresent()) {
+        Optional<DoacaoModel> doacaoModelOptional = doacaoService.findById(id);
+        if (!doacaoModelOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Doação não encontrada.");
         }
-        doacaoService.delete(intencaoModelOptional.get());
+        doacaoService.delete(doacaoModelOptional.get());
         return ResponseEntity.status(HttpStatus.OK).body("Doação excluída com sucesso.");
     }
 }

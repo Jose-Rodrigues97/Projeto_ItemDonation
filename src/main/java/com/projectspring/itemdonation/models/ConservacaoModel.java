@@ -10,13 +10,13 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "TB_STATUS_CONCERVACAO")
-public class ConcervacaoModel implements Serializable{
+@Table(name = "TB_STATUS_CONSERVACAO")
+public class ConservacaoModel implements Serializable{
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Integer conservacaoId;
     @Column(nullable = false)
     private String descrição;
 }

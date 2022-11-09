@@ -1,5 +1,6 @@
 package com.projectspring.itemdonation.models;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,11 +18,17 @@ public class RequisicaoModel implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer Id;
+    private UUID requisicaoId;
     @Column(nullable = false)
-    private UUID pessoaId;
+    private UUID doacaoId;
     @Column(nullable = false)
-    private Integer intencaoId;
+    private Integer status;
     @Column(nullable = false)
-    private boolean isStatus;
+    private String nomeRequisitante;
+    @Column(nullable = false)
+    private String emailRequisitante;
+    @Column(nullable = false)
+    private String telefoneRequisitante;
+    @Column(nullable = false)
+    private LocalDateTime dtCriacao;
 }

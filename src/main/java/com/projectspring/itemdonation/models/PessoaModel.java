@@ -8,6 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Data;
 
 @Data
@@ -18,7 +21,7 @@ public class PessoaModel implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private UUID pessoaId;
     @Column(nullable = false)
     private String nome;
     @Column(nullable = false, unique = true)
@@ -28,6 +31,6 @@ public class PessoaModel implements Serializable{
     @Column(nullable = false)
     private LocalDateTime dtCriacao;
     @Column(nullable = false)
+   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String senha;
-
 }
