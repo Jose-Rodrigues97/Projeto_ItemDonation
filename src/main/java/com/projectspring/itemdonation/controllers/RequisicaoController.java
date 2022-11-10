@@ -44,7 +44,7 @@ public class RequisicaoController {
     public ResponseEntity<Object> ObterPessoa(@PathVariable(value = "pessoaId") UUID id) {
         Optional<RequisicaoModel> requisicaoModelOptional = requisicaoService.findById(id);
         if (!requisicaoModelOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Requisição não encontrada.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não possuí requisições até o momento.");
         }
         return ResponseEntity.status(HttpStatus.OK).body(requisicaoModelOptional.get());
     }

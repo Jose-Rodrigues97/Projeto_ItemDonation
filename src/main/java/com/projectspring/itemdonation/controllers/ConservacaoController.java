@@ -23,7 +23,7 @@ public class ConservacaoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ConservacaoModel>> ObterCategorias(){
+    public ResponseEntity<List<ConservacaoModel>> ObterConservacoes(){
         return ResponseEntity.status(HttpStatus.OK).body(conservacaoService.obterConservacaoAll());
     }
 }

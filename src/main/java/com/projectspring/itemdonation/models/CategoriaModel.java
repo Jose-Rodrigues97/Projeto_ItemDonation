@@ -17,7 +17,7 @@ public class CategoriaModel implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer categoriaId;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String nome;
     @Column(nullable = false)
     private String descricao;

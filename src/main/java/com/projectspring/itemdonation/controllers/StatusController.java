@@ -23,7 +23,7 @@ public class StatusController {
     }
 
     @GetMapping
-    public ResponseEntity<List<StatusModel>> ObterCategorias(){
+    public ResponseEntity<List<StatusModel>> ObterStatus(){
         return ResponseEntity.status(HttpStatus.OK).body(statusService.obterStatusAll());
     }
 }

@@ -5,6 +5,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 import javax.transaction.Transactional;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.projectspring.itemdonation.models.DoacaoModel;
 import com.projectspring.itemdonation.repositories.DoacaoRepository;

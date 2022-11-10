@@ -17,6 +17,6 @@ public class StatusModel implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer statusId;
-    @Column(nullable = false)
-    private String descrição;    
+    @Column(nullable = false, unique = true)
+    private String descricao;    
 }

@@ -23,7 +23,7 @@ public class ItemController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ItemModel>> ObterCategorias(){
+    public ResponseEntity<List<ItemModel>> ObterItens(){
         return ResponseEntity.status(HttpStatus.OK).body(itemService.obterItemAll());
     }
 }
