@@ -1,5 +1,6 @@
 package com.projectspring.itemdonation.services;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,5 +25,9 @@ public class RequisicaoService {
 
     public Optional<RequisicaoModel> findById(UUID id){
         return requisicaoRepository.findById(id);
+    }
+
+    public List<RequisicaoModel> obterRequisicoesByDoacaoAll(UUID doacaoId){
+        return requisicaoRepository.findByDoacao(doacaoId); 
     }
 }

@@ -1,16 +1,10 @@
 package com.projectspring.itemdonation.controllers;
-
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import javax.validation.Valid;
-import org.springframework.beans.BeanUtils;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,7 +16,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.projectspring.itemdonation.models.ConservacaoModel;
 import com.projectspring.itemdonation.models.DoacaoModel;
 import com.projectspring.itemdonation.models.ItemModel;
@@ -65,7 +58,6 @@ public class DoacaoController {
         StatusModel status = new StatusModel();
         status.setStatusId(doacaoDto.getStatus());
         doacaoModel.setStatus(status);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(doacaoService.save(doacaoModel));
     }
 
@@ -104,17 +96,17 @@ public class DoacaoController {
         doacaoModel.setBairro(doacaoDto.getBairro());
         doacaoModel.setCidade(doacaoDto.getCidade());
         doacaoModel.setEstado(doacaoDto.getEstado());
-        if (doacaoDto.getItemId().toString() != null) {
+        if (!(doacaoDto.getItemId() == null)) {
             ItemModel item = new ItemModel();
             item.setItemId(doacaoDto.getItemId());
             doacaoModel.setItem(item);
         }
-        if (doacaoDto.getConservacaoId().toString() != null) {
+        if (!(doacaoDto.getConservacaoId() == null)) {
             ConservacaoModel conservacao = new ConservacaoModel();
             conservacao.setConservacaoId(doacaoDto.getConservacaoId());
             doacaoModel.setConservacao(conservacao);
         }
-        if (doacaoDto.getStatus().toString() != null) {
+        if (!(doacaoDto.getStatus() == null)) {
             StatusModel status = new StatusModel();
             status.setStatusId(doacaoDto.getStatus());
             doacaoModel.setStatus(status);

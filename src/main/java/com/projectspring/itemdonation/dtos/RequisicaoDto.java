@@ -15,4 +15,7 @@ public class RequisicaoDto {
     @NotBlank(message = "Telefone é obrigatório.")
     @Size(max = 20)
     private String telefoneRequisitante;
+    @NotBlank(message = "Mensagem é obrigatória.")
+    @Size(max = 100)
+    private String mensagem;
 }

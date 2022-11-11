@@ -1,5 +1,4 @@
 package com.projectspring.itemdonation.controllers;
-
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Optional;
@@ -74,7 +73,6 @@ public class PessoaController {
         if(!(pessoaModel.getSenha() == null || pessoaModel.getSenha() == "")){
             pessoa.setSenha(pessoaModel.getSenha());
         }
-        
         return ResponseEntity.status(HttpStatus.OK).body(pessoaService.save(pessoa));
     }
 }

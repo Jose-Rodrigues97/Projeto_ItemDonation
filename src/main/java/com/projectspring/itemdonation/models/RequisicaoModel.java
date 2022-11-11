@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Data;
 
@@ -19,16 +21,20 @@ public class RequisicaoModel implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID requisicaoId;
-    @Column(nullable = false)
-    private UUID doacaoId;
-    @Column(nullable = false)
-    private Integer status;
+    @ManyToOne
+    @JoinColumn(name = "conservacao_id", nullable = false)
+    private DoacaoModel doacao;
+    @ManyToOne
+    @JoinColumn(name = "status_id", nullable = false)
+    private StatusModel status;
     @Column(nullable = false)
     private String nomeRequisitante;
     @Column(nullable = false)
     private String emailRequisitante;
     @Column(nullable = false)
     private String telefoneRequisitante;
+    @Column(nullable = false)
+    private String mensagem;
     @Column(nullable = false)
     private LocalDateTime dtCriacao;
 }
