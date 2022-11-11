@@ -56,15 +56,25 @@ public class PessoaController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> AtualizarPessoa(@PathVariable(value = "id") UUID id,
-            @RequestBody @Valid PessoaDto pessoaDto) {
+            @RequestBody @Valid PessoaModel pessoaModel) {
         Optional<PessoaModel> pessoaModelOptional = pessoaService.findById(id);
         if (!pessoaModelOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado.");
         }
-        var pessoaModel = pessoaModelOptional.get();
-        pessoaModel.setNome(pessoaDto.getNome());
-        pessoaModel.setEmail(pessoaDto.getEmail());
-        pessoaModel.setTelefone(pessoaDto.getTelefone());
-        return ResponseEntity.status(HttpStatus.OK).body(pessoaService.save(pessoaModel));
+        PessoaModel pessoa = pessoaModelOptional.get();
+        if(!(pessoaModel.getNome() == null || pessoaModel.getNome() == "")){
+            pessoa.setNome(pessoaModel.getNome());
+        }
+        if(!(pessoaModel.getEmail() == null || pessoaModel.getEmail() == "")){
+            pessoa.setEmail(pessoaModel.getEmail());
+        }
+        if(!(pessoaModel.getTelefone() == null || pessoaModel.getTelefone() == "")){
+            pessoa.setTelefone(pessoaModel.getTelefone());
+        }
+        if(!(pessoaModel.getSenha() == null || pessoaModel.getSenha() == "")){
+            pessoa.setSenha(pessoaModel.getSenha());
+        }
+        
+        return ResponseEntity.status(HttpStatus.OK).body(pessoaService.save(pessoa));
     }
 }

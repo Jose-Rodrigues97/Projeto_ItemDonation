@@ -24,6 +24,6 @@ public class ItemModel implements Serializable{
     @Column(nullable = false)
     private String descricao;
     @OneToOne
-    @JoinColumn(name = "categoria_id")
+    @JoinColumn(name = "categoria_id", nullable = false)
     private CategoriaModel categoria;
 }

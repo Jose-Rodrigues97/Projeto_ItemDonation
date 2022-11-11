@@ -12,11 +12,10 @@ public class DoacaoDto {
     @NotBlank
     private String descricao;
     private boolean retirar;
+    private UUID pessoaId;
     private Integer conservacaoId;
     private Integer enderecoId;
-    private Integer categoriaId;
     private Integer itemId;
-    private UUID pessoaId;
     private Integer status;
     @NotBlank
     private String endereco;

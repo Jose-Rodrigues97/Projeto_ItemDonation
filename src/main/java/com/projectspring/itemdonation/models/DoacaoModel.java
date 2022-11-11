@@ -8,7 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Data;
 
@@ -28,10 +30,6 @@ public class DoacaoModel implements Serializable{
     @Column(nullable = false)
     private boolean retirar;
     @Column(nullable = false)
-    private Integer status;
-    @Column(nullable = false)
-    private Integer conservacaoId;
-    @Column(nullable = false)
     private String endereco;
     @Column(nullable = false)
     private String bairro;
@@ -39,12 +37,18 @@ public class DoacaoModel implements Serializable{
     private String cidade;
     @Column(nullable = false)
     private String estado;
-    @Column(nullable = false)
-    private Integer categoriaId;
-    @Column(nullable = false)
-    private Integer itemId;
-    @Column(nullable = false)
-    private UUID pessoaId;
+    @ManyToOne
+    @JoinColumn(name = "conservacao_id", nullable = false)
+    private ConservacaoModel conservacao;
+    @ManyToOne
+    @JoinColumn(name = "pessoa_id", nullable = false)
+    private PessoaModel pessoa;
+    @ManyToOne
+    @JoinColumn(name = "item_id", nullable = false)
+    private ItemModel item;
+    @ManyToOne
+    @JoinColumn(name = "status_id", nullable = false)
+    private StatusModel status;
     @Column(nullable = false)
     private LocalDateTime dtCriacao;
 }

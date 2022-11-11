@@ -21,7 +21,7 @@ public class PessoaModel implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID pessoaId;
+    private UUID id;
     @Column(nullable = false)
     private String nome;
     @Column(nullable = false, unique = true)
