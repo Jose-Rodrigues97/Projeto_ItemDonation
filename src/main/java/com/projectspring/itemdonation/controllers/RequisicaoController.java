@@ -38,7 +38,7 @@ public class RequisicaoController {
         requisicao.setTelefoneRequisitante(requisicaoDto.getTelefoneRequisitante());
         requisicao.setMensagem(requisicaoDto.getMensagem());
         DoacaoModel doacao = new DoacaoModel();
-        doacao.setDoacaoId(requisicaoDto.getDoacaoId());
+        doacao.setId(requisicaoDto.getDoacaoId());
         requisicao.setDoacao(doacao);
         StatusModel status = new StatusModel();
         status.setStatusId(requisicaoDto.getStatus());
@@ -47,9 +47,9 @@ public class RequisicaoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(requisicaoService.save(requisicao));
     }
 
-    @GetMapping("/{pessoaId}")
-    public ResponseEntity<Object> ObterPessoa(@PathVariable(value = "pessoaId") UUID id) {
-        Optional<RequisicaoModel> requisicaoModelOptional = requisicaoService.findById(id);
+    @GetMapping("/{requisicaoId}")
+    public ResponseEntity<Object> ObterPessoa(@PathVariable(value = "requisicaoId") UUID requisicaoId) {
+        Optional<RequisicaoModel> requisicaoModelOptional = requisicaoService.findById(requisicaoId);
         if (!requisicaoModelOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não possuí requisições até o momento.");
         }

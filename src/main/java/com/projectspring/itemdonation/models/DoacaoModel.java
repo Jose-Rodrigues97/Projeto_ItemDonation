@@ -20,7 +20,7 @@ public class DoacaoModel implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID doacaoId;
+    private UUID id;
     @Column(nullable = false)
     private String titulo;
     @Column(nullable = false)

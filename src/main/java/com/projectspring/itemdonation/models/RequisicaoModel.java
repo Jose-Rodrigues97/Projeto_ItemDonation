@@ -22,7 +22,7 @@ public class RequisicaoModel implements Serializable{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID requisicaoId;
     @ManyToOne
-    @JoinColumn(name = "conservacao_id", nullable = false)
+    @JoinColumn(name = "doacao_id", nullable = false)
     private DoacaoModel doacao;
     @ManyToOne
     @JoinColumn(name = "status_id", nullable = false)

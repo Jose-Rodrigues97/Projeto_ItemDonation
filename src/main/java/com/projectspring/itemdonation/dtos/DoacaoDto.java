@@ -1,5 +1,5 @@
 package com.projectspring.itemdonation.dtos;
-
+import java.util.ArrayList;
 import java.util.UUID;
 
 import javax.validation.constraints.NotBlank;
@@ -25,4 +25,5 @@ public class DoacaoDto {
     private String cidade;
     @NotBlank
     private String estado;
+    private ArrayList<String> imagens;
 }

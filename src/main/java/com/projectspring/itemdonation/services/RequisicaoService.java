@@ -23,11 +23,11 @@ public class RequisicaoService {
         return requisicaoRepository.save(requisicaoModel);
     }
 
-    public Optional<RequisicaoModel> findById(UUID id){
-        return requisicaoRepository.findById(id);
+    public Optional<RequisicaoModel> findById(UUID requisicaoId){
+        return requisicaoRepository.findById(requisicaoId);
     }
 
     public List<RequisicaoModel> obterRequisicoesByDoacaoAll(UUID doacaoId){
-        return requisicaoRepository.findByDoacao(doacaoId); 
+        return requisicaoRepository.findByDoacaoId(doacaoId); 
     }
 }

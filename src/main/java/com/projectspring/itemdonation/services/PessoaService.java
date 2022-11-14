@@ -20,8 +20,8 @@ public class PessoaService {
     public PessoaModel save(PessoaModel pessoaModel){
         return pessoaRepository.save(pessoaModel);
     }
-    public Optional<PessoaModel> findById(UUID id){
-        return pessoaRepository.findById(id);
+    public Optional<PessoaModel> findById(UUID pessoaId){
+        return pessoaRepository.findById(pessoaId);
     }
     public boolean existeTelefone(String telefone){
         return pessoaRepository.existsByTelefone(telefone);

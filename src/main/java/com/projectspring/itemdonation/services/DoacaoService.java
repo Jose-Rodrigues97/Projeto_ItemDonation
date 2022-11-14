@@ -1,13 +1,8 @@
 package com.projectspring.itemdonation.services;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
 import javax.transaction.Transactional;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.projectspring.itemdonation.models.DoacaoModel;
 import com.projectspring.itemdonation.repositories.DoacaoRepository;
@@ -21,7 +16,7 @@ public class DoacaoService {
     }
 
     @Transactional
-    public DoacaoModel save(DoacaoModel doacaoModel) {
+    public DoacaoModel salvar(DoacaoModel doacaoModel) {
         return doacaoRepository.save(doacaoModel);
     }
 
@@ -29,8 +24,8 @@ public class DoacaoService {
         return doacaoRepository.findAll();
     }
 
-    public Optional<DoacaoModel> findById(UUID id) {
-        return doacaoRepository.findById(id);
+    public Optional<DoacaoModel> findById(UUID doacaoId) {
+        return doacaoRepository.findById(doacaoId);
     }
 
     public List<DoacaoModel> obterDoacoesUsuarioAll(UUID pessoaId){

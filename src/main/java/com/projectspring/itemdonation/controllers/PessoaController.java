@@ -44,19 +44,19 @@ public class PessoaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(pessoaService.save(pessoaModel));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Object> ObterPessoa(@PathVariable(value = "id") UUID id) {
-        Optional<PessoaModel> pessoaModelOptional = pessoaService.findById(id);
+    @GetMapping("/{pessoaId}")
+    public ResponseEntity<Object> ObterPessoa(@PathVariable(value = "pessoaId") UUID pessoaId) {
+        Optional<PessoaModel> pessoaModelOptional = pessoaService.findById(pessoaId);
         if (!pessoaModelOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pessoa não encontrada.");
         }
         return ResponseEntity.status(HttpStatus.OK).body(pessoaModelOptional.get());
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Object> AtualizarPessoa(@PathVariable(value = "id") UUID id,
+    @PutMapping("/{pessoaId}")
+    public ResponseEntity<Object> AtualizarPessoa(@PathVariable(value = "pessoaId") UUID pessoaId,
             @RequestBody @Valid PessoaModel pessoaModel) {
-        Optional<PessoaModel> pessoaModelOptional = pessoaService.findById(id);
+        Optional<PessoaModel> pessoaModelOptional = pessoaService.findById(pessoaId);
         if (!pessoaModelOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado.");
         }

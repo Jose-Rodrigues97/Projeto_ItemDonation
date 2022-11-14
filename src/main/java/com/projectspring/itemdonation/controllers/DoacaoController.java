@@ -18,11 +18,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.projectspring.itemdonation.models.ConservacaoModel;
 import com.projectspring.itemdonation.models.DoacaoModel;
+import com.projectspring.itemdonation.models.ImagemDoacaoModel;
 import com.projectspring.itemdonation.models.ItemModel;
 import com.projectspring.itemdonation.models.PessoaModel;
 import com.projectspring.itemdonation.models.StatusModel;
 import com.projectspring.itemdonation.dtos.DoacaoDto;
 import com.projectspring.itemdonation.services.DoacaoService;
+import com.projectspring.itemdonation.services.ImagemDoacaoService;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -30,9 +32,11 @@ import com.projectspring.itemdonation.services.DoacaoService;
 public class DoacaoController {
 
     final DoacaoService doacaoService;
+    final ImagemDoacaoService imagemDoacaoService;
 
-    public DoacaoController(DoacaoService doacaoService) {
+    public DoacaoController(DoacaoService doacaoService, ImagemDoacaoService imagemDoacaoService) {
         this.doacaoService = doacaoService;
+        this.imagemDoacaoService = imagemDoacaoService;
     }
 
     @PostMapping
@@ -58,7 +62,15 @@ public class DoacaoController {
         StatusModel status = new StatusModel();
         status.setStatusId(doacaoDto.getStatus());
         doacaoModel.setStatus(status);
-        return ResponseEntity.status(HttpStatus.CREATED).body(doacaoService.save(doacaoModel));
+        ImagemDoacaoModel imagemDoacao = new ImagemDoacaoModel();
+        if (!(doacaoDto.getImagens() == null)) {
+            for (String imagem : doacaoDto.getImagens()) {
+                imagemDoacao.setBinario(imagem);
+                imagemDoacao.setDoacao(doacaoModel);
+                imagemDoacaoService.salvar(imagemDoacao);
+            }
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(doacaoService.salvar(doacaoModel));
     }
 
     @GetMapping
@@ -66,9 +78,9 @@ public class DoacaoController {
         return ResponseEntity.status(HttpStatus.OK).body(doacaoService.obterDoacoesAll());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Object> ObterDoacao(@PathVariable(value = "id") UUID id) {
-        Optional<DoacaoModel> doacaoModelOptional = doacaoService.findById(id);
+    @GetMapping("/{doacaoId}")
+    public ResponseEntity<Object> ObterDoacao(@PathVariable(value = "doacaoId") UUID doacaoId) {
+        Optional<DoacaoModel> doacaoModelOptional = doacaoService.findById(doacaoId);
         if (!doacaoModelOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Doação não encontrada.");
         }
@@ -81,10 +93,10 @@ public class DoacaoController {
         return ResponseEntity.status(HttpStatus.OK).body(doacaoModelList);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Object> AtualizarDoacao(@PathVariable(value = "id") UUID id,
+    @PutMapping("/{doacaoId}")
+    public ResponseEntity<Object> AtualizarDoacao(@PathVariable(value = "doacaoId") UUID doacaoId,
             @RequestBody @Valid DoacaoDto doacaoDto) {
-        Optional<DoacaoModel> doacaoModelOptional = doacaoService.findById(id);
+        Optional<DoacaoModel> doacaoModelOptional = doacaoService.findById(doacaoId);
         if (!doacaoModelOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Doação não encontrada.");
         }
@@ -111,12 +123,12 @@ public class DoacaoController {
             status.setStatusId(doacaoDto.getStatus());
             doacaoModel.setStatus(status);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(doacaoService.save(doacaoModel));
+        return ResponseEntity.status(HttpStatus.OK).body(doacaoService.salvar(doacaoModel));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deletarDoacaoEntity(@PathVariable(value = "id") UUID id) {
-        Optional<DoacaoModel> doacaoModelOptional = doacaoService.findById(id);
+    @DeleteMapping("/{doacaoId}")
+    public ResponseEntity<Object> deletarDoacaoEntity(@PathVariable(value = "doacaoId") UUID doacaoId) {
+        Optional<DoacaoModel> doacaoModelOptional = doacaoService.findById(doacaoId);
         if (!doacaoModelOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Doação não encontrada.");
         }

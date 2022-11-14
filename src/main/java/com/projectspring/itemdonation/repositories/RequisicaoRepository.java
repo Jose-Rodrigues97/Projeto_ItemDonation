@@ -7,5 +7,5 @@ import com.projectspring.itemdonation.models.RequisicaoModel;
 
 @Repository
 public interface RequisicaoRepository extends JpaRepository<RequisicaoModel, UUID>{
-    List<RequisicaoModel> findByDoacao(UUID doacaoId);
+    List<RequisicaoModel> findByDoacaoId(UUID doacao_Id);
 }
