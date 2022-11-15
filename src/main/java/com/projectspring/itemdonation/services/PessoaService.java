@@ -1,4 +1,5 @@
 package com.projectspring.itemdonation.services;
+
 import java.util.Optional;
 import java.util.UUID;
 
@@ -11,22 +12,29 @@ import com.projectspring.itemdonation.repositories.PessoaRepository;
 public class PessoaService {
 
     final PessoaRepository pessoaRepository;
-    
+
     public PessoaService(PessoaRepository pessoaRepository) {
         this.pessoaRepository = pessoaRepository;
     }
 
     @Transactional
-    public PessoaModel save(PessoaModel pessoaModel){
+    public PessoaModel save(PessoaModel pessoaModel) {
         return pessoaRepository.save(pessoaModel);
     }
-    public Optional<PessoaModel> findById(UUID pessoaId){
+
+    public Optional<PessoaModel> findById(UUID pessoaId) {
         return pessoaRepository.findById(pessoaId);
     }
-    public boolean existeTelefone(String telefone){
+
+    public boolean existeTelefone(String telefone) {
         return pessoaRepository.existsByTelefone(telefone);
     }
-    public boolean existeEmail(String email){
+
+    public boolean existeEmail(String email) {
         return pessoaRepository.existsByEmail(email);
+    }
+
+    public Optional<PessoaModel> findByLogin(String email, String senha) {
+        return pessoaRepository.findByEmailAndSenha(email, senha);
     }
 }

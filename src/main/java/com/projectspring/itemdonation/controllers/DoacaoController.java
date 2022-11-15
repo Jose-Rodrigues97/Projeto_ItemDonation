@@ -1,6 +1,9 @@
 package com.projectspring.itemdonation.controllers;
+
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -15,7 +18,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import com.projectspring.itemdonation.models.ConservacaoModel;
 import com.projectspring.itemdonation.models.DoacaoModel;
 import com.projectspring.itemdonation.models.ImagemDoacaoModel;
@@ -40,7 +45,8 @@ public class DoacaoController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> SalvarDoacao(@RequestBody @Valid DoacaoDto doacaoDto) {
+    public ResponseEntity<Object> SalvarDoacao(DoacaoDto doacaoDto,
+            @RequestParam("file") MultipartFile file) {
         var doacaoModel = new DoacaoModel();
         doacaoModel.setBairro(doacaoDto.getBairro());
         doacaoModel.setCidade(doacaoDto.getCidade());
@@ -62,15 +68,20 @@ public class DoacaoController {
         StatusModel status = new StatusModel();
         status.setStatusId(doacaoDto.getStatus());
         doacaoModel.setStatus(status);
-        ImagemDoacaoModel imagemDoacao = new ImagemDoacaoModel();
-        if (!(doacaoDto.getImagens() == null)) {
-            for (String imagem : doacaoDto.getImagens()) {
-                imagemDoacao.setBinario(imagem);
+        ResponseEntity<Object> response = ResponseEntity.status(HttpStatus.CREATED)
+                .body(doacaoService.salvar(doacaoModel));
+        try {
+            if (!(file.getBytes() == null)) {
+                ImagemDoacaoModel imagemDoacao = new ImagemDoacaoModel();
+                imagemDoacao.setBinario(file.getBytes());
                 imagemDoacao.setDoacao(doacaoModel);
                 imagemDoacaoService.salvar(imagemDoacao);
             }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(doacaoService.salvar(doacaoModel));
+        return response;
     }
 
     @GetMapping

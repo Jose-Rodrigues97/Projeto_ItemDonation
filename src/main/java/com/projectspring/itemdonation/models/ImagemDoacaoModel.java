@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Data;
@@ -17,8 +18,9 @@ public class ImagemDoacaoModel implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer imagemId;
+    @Lob
     @Column(nullable = false)
-    private String binario;
+    private byte[] binario;
     @ManyToOne
     @JoinColumn(name = "doacao_id", nullable = false)
     private DoacaoModel doacao;

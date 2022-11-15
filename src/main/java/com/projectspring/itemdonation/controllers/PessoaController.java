@@ -75,4 +75,13 @@ public class PessoaController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(pessoaService.save(pessoa));
     }
+
+    @GetMapping("/{email}/{senha}")
+    public ResponseEntity<Object> ObterPessoa(@PathVariable(value = "email") String email, @PathVariable(value = "senha") String senha) {
+        Optional<PessoaModel> pessoaModelOptional = pessoaService.findByLogin(email, senha);
+        if (!pessoaModelOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Login inválido.");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(pessoaModelOptional.get());
+    }
 }

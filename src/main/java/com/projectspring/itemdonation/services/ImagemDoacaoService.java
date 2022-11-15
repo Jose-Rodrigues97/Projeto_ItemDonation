@@ -1,4 +1,8 @@
 package com.projectspring.itemdonation.services;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
@@ -17,5 +21,18 @@ public class ImagemDoacaoService {
     @Transactional
     public ImagemDoacaoModel salvar(ImagemDoacaoModel imagemDoacaoModel) {
         return imagemDoacaoRepository.save(imagemDoacaoModel);
+    }
+
+    public Optional<ImagemDoacaoModel> findById(Integer id) {
+        return imagemDoacaoRepository.findById(id);
+    }
+
+    public List<ImagemDoacaoModel> obterDoacoesUsuarioAll(UUID doacaoId){
+        return imagemDoacaoRepository.findByDoacaoId(doacaoId);
+    }
+
+    @Transactional
+    public void delete(ImagemDoacaoModel imagemDoacaoModel) {
+        imagemDoacaoRepository.delete(imagemDoacaoModel);
     }
 }

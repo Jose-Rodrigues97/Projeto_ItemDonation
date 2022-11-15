@@ -1,5 +1,4 @@
 package com.projectspring.itemdonation.dtos;
-import java.util.ArrayList;
 import java.util.UUID;
 
 import javax.validation.constraints.NotBlank;
@@ -14,7 +13,6 @@ public class DoacaoDto {
     private boolean retirar;
     private UUID pessoaId;
     private Integer conservacaoId;
-    private Integer enderecoId;
     private Integer itemId;
     private Integer status;
     @NotBlank
@@ -25,5 +23,4 @@ public class DoacaoDto {
     private String cidade;
     @NotBlank
     private String estado;
-    private ArrayList<String> imagens;
 }
