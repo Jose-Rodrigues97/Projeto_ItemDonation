@@ -19,15 +19,15 @@ public class ImagemDoacaoService {
     }
     
     @Transactional
-    public ImagemDoacaoModel salvar(ImagemDoacaoModel imagemDoacaoModel) {
-        return imagemDoacaoRepository.save(imagemDoacaoModel);
+    public void salvar(ImagemDoacaoModel imagemDoacaoModel) {
+        imagemDoacaoRepository.save(imagemDoacaoModel);
     }
 
     public Optional<ImagemDoacaoModel> findById(Integer id) {
         return imagemDoacaoRepository.findById(id);
     }
 
-    public List<ImagemDoacaoModel> obterDoacoesUsuarioAll(UUID doacaoId){
+    public List<ImagemDoacaoModel> obterImagensDoacoesAll(UUID doacaoId){
         return imagemDoacaoRepository.findByDoacaoId(doacaoId);
     }
 

@@ -27,6 +27,7 @@ import com.projectspring.itemdonation.models.ImagemDoacaoModel;
 import com.projectspring.itemdonation.models.ItemModel;
 import com.projectspring.itemdonation.models.PessoaModel;
 import com.projectspring.itemdonation.models.StatusModel;
+import com.projectspring.itemdonation.dtos.DoacaoComImagemDto;
 import com.projectspring.itemdonation.dtos.DoacaoDto;
 import com.projectspring.itemdonation.services.DoacaoService;
 import com.projectspring.itemdonation.services.ImagemDoacaoService;
@@ -46,7 +47,7 @@ public class DoacaoController {
 
     @PostMapping
     public ResponseEntity<Object> SalvarDoacao(DoacaoDto doacaoDto,
-            @RequestParam("file") MultipartFile file) {
+            @RequestParam("file") ArrayList<MultipartFile> files) {
         var doacaoModel = new DoacaoModel();
         doacaoModel.setBairro(doacaoDto.getBairro());
         doacaoModel.setCidade(doacaoDto.getCidade());
@@ -71,11 +72,13 @@ public class DoacaoController {
         ResponseEntity<Object> response = ResponseEntity.status(HttpStatus.CREATED)
                 .body(doacaoService.salvar(doacaoModel));
         try {
-            if (!(file.getBytes() == null)) {
-                ImagemDoacaoModel imagemDoacao = new ImagemDoacaoModel();
-                imagemDoacao.setBinario(file.getBytes());
-                imagemDoacao.setDoacao(doacaoModel);
-                imagemDoacaoService.salvar(imagemDoacao);
+            if (!(files.isEmpty())) {
+                for (MultipartFile file : files) {
+                    ImagemDoacaoModel imagemDoacao = new ImagemDoacaoModel();
+                    imagemDoacao.setBinario(file.getBytes());
+                    imagemDoacao.setDoacao(doacaoModel);
+                    imagemDoacaoService.salvar(imagemDoacao);
+                }
             }
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -85,23 +88,45 @@ public class DoacaoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<DoacaoModel>> ObterDoacoes() {
-        return ResponseEntity.status(HttpStatus.OK).body(doacaoService.obterDoacoesAll());
+    public List<DoacaoComImagemDto> ObterDoacoes() {
+        ArrayList<DoacaoComImagemDto> doacaoComImagemDtoList = new ArrayList<DoacaoComImagemDto>();
+        var doacoesList = doacaoService.obterDoacoesAll();
+        for (DoacaoModel doacao : doacoesList) {
+            DoacaoComImagemDto doacaoComImagemDto = new DoacaoComImagemDto();
+            doacaoComImagemDto.setDoacao(doacao);
+            doacaoComImagemDto.setImagens(imagemDoacaoService.obterImagensDoacoesAll(doacao.getId()));
+            doacaoComImagemDtoList.add(doacaoComImagemDto);
+        }
+        return doacaoComImagemDtoList;
     }
 
     @GetMapping("/{doacaoId}")
-    public ResponseEntity<Object> ObterDoacao(@PathVariable(value = "doacaoId") UUID doacaoId) {
+    public ResponseEntity<DoacaoComImagemDto> ObterDoacao(@PathVariable(value = "doacaoId") UUID doacaoId) {
         Optional<DoacaoModel> doacaoModelOptional = doacaoService.findById(doacaoId);
+        DoacaoComImagemDto doacaoImage = new DoacaoComImagemDto();
         if (!doacaoModelOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Doação não encontrada.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(doacaoModelOptional.get());
+        var doacao = doacaoModelOptional.get();
+        doacaoImage.setDoacao(doacao);
+        doacaoImage.setImagens(imagemDoacaoService.obterImagensDoacoesAll(doacao.getId()));
+        return ResponseEntity.status(HttpStatus.OK).body(doacaoImage);
     }
 
     @GetMapping("/pessoa/{pessoaId}")
-    public ResponseEntity<List<DoacaoModel>> ObterDoacaoPorUsuario(@PathVariable(value = "pessoaId") UUID pessoaId) {
+    public ResponseEntity<List<DoacaoComImagemDto>> ObterDoacaoPorUsuario(@PathVariable(value = "pessoaId") UUID pessoaId) {
         List<DoacaoModel> doacaoModelList = doacaoService.obterDoacoesUsuarioAll(pessoaId);
-        return ResponseEntity.status(HttpStatus.OK).body(doacaoModelList);
+        if(doacaoModelList.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        ArrayList<DoacaoComImagemDto> doacaoComImagemDtoList = new ArrayList<DoacaoComImagemDto>();
+        for (DoacaoModel doacao : doacaoModelList) {
+            DoacaoComImagemDto doacaoComImagemDto = new DoacaoComImagemDto();
+            doacaoComImagemDto.setDoacao(doacao);
+            doacaoComImagemDto.setImagens(imagemDoacaoService.obterImagensDoacoesAll(doacao.getId()));
+            doacaoComImagemDtoList.add(doacaoComImagemDto);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(doacaoComImagemDtoList);
     }
 
     @PutMapping("/{doacaoId}")

@@ -24,9 +24,9 @@ public class ImagemDoacaoController {
     }
 
     @GetMapping("/doacao/{doacaoId}")
-    public ResponseEntity<List<ImagemDoacaoModel>> ObterDoacaoPorUsuario(
+    public ResponseEntity<List<ImagemDoacaoModel>> ObterImagensPorDoacao(
             @PathVariable(value = "doacaoId") UUID doacaoId) {
-        List<ImagemDoacaoModel> imagemDoacaoModelList = imagemDoacaoService.obterDoacoesUsuarioAll(doacaoId);
+        List<ImagemDoacaoModel> imagemDoacaoModelList = imagemDoacaoService.obterImagensDoacoesAll(doacaoId);
         return ResponseEntity.status(HttpStatus.OK).body(imagemDoacaoModelList);
     }
 
