@@ -29,8 +29,10 @@ import com.projectspring.itemdonation.models.PessoaModel;
 import com.projectspring.itemdonation.models.StatusModel;
 import com.projectspring.itemdonation.dtos.DoacaoComImagemDto;
 import com.projectspring.itemdonation.dtos.DoacaoDto;
+import com.projectspring.itemdonation.dtos.DoacaoReqImagDto;
 import com.projectspring.itemdonation.services.DoacaoService;
 import com.projectspring.itemdonation.services.ImagemDoacaoService;
+import com.projectspring.itemdonation.services.RequisicaoService;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -39,10 +41,12 @@ public class DoacaoController {
 
     final DoacaoService doacaoService;
     final ImagemDoacaoService imagemDoacaoService;
+    final RequisicaoService requisicaoService;
 
-    public DoacaoController(DoacaoService doacaoService, ImagemDoacaoService imagemDoacaoService) {
+    public DoacaoController(DoacaoService doacaoService, ImagemDoacaoService imagemDoacaoService, RequisicaoService requisicaoService) {
         this.doacaoService = doacaoService;
         this.imagemDoacaoService = imagemDoacaoService;
+        this.requisicaoService = requisicaoService;
     }
 
     @PostMapping
@@ -114,19 +118,21 @@ public class DoacaoController {
     }
 
     @GetMapping("/pessoa/{pessoaId}")
-    public ResponseEntity<List<DoacaoComImagemDto>> ObterDoacaoPorUsuario(@PathVariable(value = "pessoaId") UUID pessoaId) {
+    public ResponseEntity<List<DoacaoReqImagDto>> ObterDoacaoPorUsuario(@PathVariable(value = "pessoaId") UUID pessoaId) {
         List<DoacaoModel> doacaoModelList = doacaoService.obterDoacoesUsuarioAll(pessoaId);
         if(doacaoModelList.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return ResponseEntity.status(HttpStatus.OK).body(null);
         }
-        ArrayList<DoacaoComImagemDto> doacaoComImagemDtoList = new ArrayList<DoacaoComImagemDto>();
+        ArrayList<DoacaoReqImagDto> doacaoReqImagDtoList = new ArrayList<DoacaoReqImagDto>();
         for (DoacaoModel doacao : doacaoModelList) {
-            DoacaoComImagemDto doacaoComImagemDto = new DoacaoComImagemDto();
-            doacaoComImagemDto.setDoacao(doacao);
-            doacaoComImagemDto.setImagens(imagemDoacaoService.obterImagensDoacoesAll(doacao.getId()));
-            doacaoComImagemDtoList.add(doacaoComImagemDto);
+            DoacaoReqImagDto doacaoReqImagDto = new DoacaoReqImagDto();
+            doacaoReqImagDto.setDoacao(doacao);
+            doacaoReqImagDto.setImagens(imagemDoacaoService.obterImagensDoacoesAll(doacao.getId()));
+            doacaoReqImagDto.setRequisicoes(requisicaoService.obterRequisicoesByDoacaoAll(doacao.getId()));
+            doacaoReqImagDto.setNumRequisicoes(doacaoReqImagDto.getRequisicoes().size());
+            doacaoReqImagDtoList.add(doacaoReqImagDto);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(doacaoComImagemDtoList);
+        return ResponseEntity.status(HttpStatus.OK).body(doacaoReqImagDtoList);
     }
 
     @PutMapping("/{doacaoId}")
