@@ -73,9 +73,9 @@
         <configuration> 
           <schemaVersion>v2</schemaVersion>  
           <subscriptionId>7d85efaa-4959-43ff-a484-f7cb9ae141a4</subscriptionId>  
-          <resourceGroup>itemdonation-1666725245445-rg</resourceGroup>  
-          <appName>itemdonation-1666725245445</appName>  
-          <pricingTier>P1v2</pricingTier>  
+          <resourceGroup>GrupoRecursos_Estudante</resourceGroup>  
+          <appName>ItemDonationApp</appName>  
+          <pricingTier>B1</pricingTier>  
           <region>centralus</region>  
           <runtime> 
             <os>Linux</os>  
