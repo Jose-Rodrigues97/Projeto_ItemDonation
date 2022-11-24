@@ -3,6 +3,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import javax.transaction.Transactional;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.projectspring.itemdonation.models.DoacaoModel;
 import com.projectspring.itemdonation.repositories.DoacaoRepository;
@@ -20,8 +23,8 @@ public class DoacaoService {
         return doacaoRepository.save(doacaoModel);
     }
 
-    public List<DoacaoModel> obterDoacoesAll() {
-        return doacaoRepository.findAll();
+    public Page<DoacaoModel> obterDoacoesAll(Pageable pageable) {
+        return doacaoRepository.findAll(pageable);
     }
 
     public Optional<DoacaoModel> findById(UUID doacaoId) {

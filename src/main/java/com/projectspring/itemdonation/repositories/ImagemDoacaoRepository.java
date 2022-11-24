@@ -11,4 +11,5 @@ import com.projectspring.itemdonation.models.ImagemDoacaoModel;
 @Repository
 public interface ImagemDoacaoRepository extends JpaRepository<ImagemDoacaoModel, Integer>{
     List<ImagemDoacaoModel> findByDoacaoId(UUID doacaoId);
+
 }

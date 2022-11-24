@@ -6,8 +6,13 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.UUID;
-import javax.validation.Valid;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,7 +21,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,7 +47,8 @@ public class DoacaoController {
     final ImagemDoacaoService imagemDoacaoService;
     final RequisicaoService requisicaoService;
 
-    public DoacaoController(DoacaoService doacaoService, ImagemDoacaoService imagemDoacaoService, RequisicaoService requisicaoService) {
+    public DoacaoController(DoacaoService doacaoService, ImagemDoacaoService imagemDoacaoService,
+            RequisicaoService requisicaoService) {
         this.doacaoService = doacaoService;
         this.imagemDoacaoService = imagemDoacaoService;
         this.requisicaoService = requisicaoService;
@@ -51,7 +56,7 @@ public class DoacaoController {
 
     @PostMapping
     public ResponseEntity<Object> SalvarDoacao(DoacaoDto doacaoDto,
-            @RequestParam("file") ArrayList<MultipartFile> files) {
+            @RequestParam("files") ArrayList<MultipartFile> files) {
         var doacaoModel = new DoacaoModel();
         doacaoModel.setBairro(doacaoDto.getBairro());
         doacaoModel.setCidade(doacaoDto.getCidade());
@@ -92,16 +97,17 @@ public class DoacaoController {
     }
 
     @GetMapping
-    public List<DoacaoComImagemDto> ObterDoacoes() {
+    public ResponseEntity<Page<DoacaoComImagemDto>> ObterDoacoes(Pageable pageable) {
+        var doacoesPage = doacaoService.obterDoacoesAll(pageable);
         ArrayList<DoacaoComImagemDto> doacaoComImagemDtoList = new ArrayList<DoacaoComImagemDto>();
-        var doacoesList = doacaoService.obterDoacoesAll();
-        for (DoacaoModel doacao : doacoesList) {
+        for (DoacaoModel doacao : doacoesPage) {
             DoacaoComImagemDto doacaoComImagemDto = new DoacaoComImagemDto();
             doacaoComImagemDto.setDoacao(doacao);
             doacaoComImagemDto.setImagens(imagemDoacaoService.obterImagensDoacoesAll(doacao.getId()));
             doacaoComImagemDtoList.add(doacaoComImagemDto);
         }
-        return doacaoComImagemDtoList;
+        Page<DoacaoComImagemDto> doacaoComImagemDtoPage = new PageImpl<DoacaoComImagemDto>(doacaoComImagemDtoList, pageable, doacoesPage.getTotalElements());
+        return ResponseEntity.status(HttpStatus.OK).body(doacaoComImagemDtoPage);
     }
 
     @GetMapping("/{doacaoId}")
@@ -118,9 +124,10 @@ public class DoacaoController {
     }
 
     @GetMapping("/pessoa/{pessoaId}")
-    public ResponseEntity<List<DoacaoReqImagDto>> ObterDoacaoPorUsuario(@PathVariable(value = "pessoaId") UUID pessoaId) {
+    public ResponseEntity<List<DoacaoReqImagDto>> ObterDoacaoPorUsuario(
+            @PathVariable(value = "pessoaId") UUID pessoaId) {
         List<DoacaoModel> doacaoModelList = doacaoService.obterDoacoesUsuarioAll(pessoaId);
-        if(doacaoModelList.isEmpty()){
+        if (doacaoModelList.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(null);
         }
         ArrayList<DoacaoReqImagDto> doacaoReqImagDtoList = new ArrayList<DoacaoReqImagDto>();
@@ -137,7 +144,7 @@ public class DoacaoController {
 
     @PutMapping("/{doacaoId}")
     public ResponseEntity<Object> AtualizarDoacao(@PathVariable(value = "doacaoId") UUID doacaoId,
-            @RequestBody @Valid DoacaoDto doacaoDto) {
+            DoacaoDto doacaoDto, @RequestParam("file") ArrayList<MultipartFile> files) {
         Optional<DoacaoModel> doacaoModelOptional = doacaoService.findById(doacaoId);
         if (!doacaoModelOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Doação não encontrada.");
@@ -164,6 +171,19 @@ public class DoacaoController {
             StatusModel status = new StatusModel();
             status.setStatusId(doacaoDto.getStatus());
             doacaoModel.setStatus(status);
+        }
+        try {
+            if (!(files.isEmpty())) {
+                for (MultipartFile file : files) {
+                    ImagemDoacaoModel imagemDoacao = new ImagemDoacaoModel();
+                    imagemDoacao.setBinario(file.getBytes());
+                    imagemDoacao.setDoacao(doacaoModel);
+                    imagemDoacaoService.salvar(imagemDoacao);
+                }
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
         return ResponseEntity.status(HttpStatus.OK).body(doacaoService.salvar(doacaoModel));
     }

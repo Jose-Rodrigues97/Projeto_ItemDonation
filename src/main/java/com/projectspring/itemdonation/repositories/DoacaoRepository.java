@@ -8,5 +8,4 @@ import com.projectspring.itemdonation.models.DoacaoModel;
 @Repository
 public interface DoacaoRepository extends JpaRepository<DoacaoModel, UUID> {
     List<DoacaoModel> findByPessoaId(UUID pessoaId);
-
 }

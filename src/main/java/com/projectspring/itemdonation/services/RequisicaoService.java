@@ -30,4 +30,9 @@ public class RequisicaoService {
     public List<RequisicaoModel> obterRequisicoesByDoacaoAll(UUID doacaoId){
         return requisicaoRepository.findByDoacaoId(doacaoId); 
     }
+
+    @Transactional
+    public void delete(RequisicaoModel requisicaoModel) {
+        requisicaoRepository.delete(requisicaoModel);
+    }
 }
