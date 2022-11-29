@@ -31,8 +31,8 @@ public class DoacaoService {
         return doacaoRepository.findById(doacaoId);
     }
 
-    public List<DoacaoModel> obterDoacoesUsuarioAll(UUID pessoaId){
-        return doacaoRepository.findByPessoaId(pessoaId);
+    public Page<DoacaoModel> obterDoacoesUsuarioAll(UUID pessoaId, Pageable pageable){
+        return doacaoRepository.findByPessoaId(pessoaId, pageable);
     }
 
     @Transactional

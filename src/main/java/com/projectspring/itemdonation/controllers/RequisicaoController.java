@@ -7,6 +7,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import javax.validation.Valid;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -70,13 +74,14 @@ public class RequisicaoController {
     }
 
     @GetMapping("/pessoa/{pessoaId}")
-    public ResponseEntity<List<RequisicaoModel>> ObterRequisicoesPorUsuario(
-            @PathVariable(value = "pessoaId") UUID pessoaId) {
-        List<DoacaoModel> doacaoModelList = doacaoService.obterDoacoesUsuarioAll(pessoaId);
+    public ResponseEntity<Page<RequisicaoModel>> ObterRequisicoesPorUsuario(
+            @PathVariable(value = "pessoaId") UUID pessoaId, Pageable pageable) {
+        Page<DoacaoModel> doacaoModelPage = doacaoService.obterDoacoesUsuarioAll(pessoaId, pageable);
         ArrayList<RequisicaoModel> requisicaoModelList = new ArrayList<RequisicaoModel>();
-        for (DoacaoModel doacao : doacaoModelList) {
+        for (DoacaoModel doacao : doacaoModelPage) {
             requisicaoModelList.addAll(requisicaoService.obterRequisicoesByDoacaoAll(doacao.getId()));
         }
-        return ResponseEntity.status(HttpStatus.OK).body(requisicaoModelList);
+        Page<RequisicaoModel> doacaoComImagemDtoPage = new PageImpl<RequisicaoModel>(requisicaoModelList, pageable, doacaoModelPage.getTotalElements());
+        return ResponseEntity.status(HttpStatus.OK).body(doacaoComImagemDtoPage);
     }
 }

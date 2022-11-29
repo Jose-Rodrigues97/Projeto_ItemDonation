@@ -31,7 +31,7 @@ public class PessoaController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> SalvarPessoa(@RequestBody @Valid PessoaDto pessoaDto) {
+    public ResponseEntity<Object> SalvarPessoa(@RequestBody PessoaDto pessoaDto) {
         if (pessoaService.existeEmail(pessoaDto.getEmail())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("E-mail já está cadastrado.");
         }
